@@ -26,18 +26,24 @@ public class OnBoardingActivity extends AppCompatActivity {
     Button btnNext, btnGetStarted;
     int position = 0;
     Animation btnAnim;
-    boolean restorePrefData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_on_boarding);
 
-        if (restorePrefData){
+        if (restorePrefData()){
             Intent intentMain = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intentMain);
             finish();
         }
+
+//        getSupportActionBar().hide();
 
         // view
         tabIndicator = findViewById(R.id.tbIndicator);
@@ -75,7 +81,7 @@ public class OnBoardingActivity extends AppCompatActivity {
             }
         });
 
-        tabIndicator.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        tabIndicator.addOnTabSelectedListener(new TabLayout.BaseOnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getPosition() == mList.size()-1){
@@ -108,14 +114,14 @@ public class OnBoardingActivity extends AppCompatActivity {
 
     private boolean restorePrefData(){
         SharedPreferences pref = getApplicationContext().getSharedPreferences("myPrefs", MODE_PRIVATE);
-        Boolean isIntroActivityOpnendBefore = pref.getBoolean("isIntroOpned", false);
+        Boolean isIntroActivityOpnendBefore = pref.getBoolean("isIntroOpnend", false);
         return isIntroActivityOpnendBefore;
     }
 
     private void savePrefsData(){
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("myPrefs", MODE_PRIVATE);
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("myPrefs",MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean("isIntroOpnend", true);
+        editor.putBoolean("isIntroOpnend",true);
         editor.commit();
     }
 
